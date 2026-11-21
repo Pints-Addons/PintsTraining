@@ -1,0 +1,6 @@
+Pint's Training - Changelog
+
+v1.2
+- First release on CurseForge. A spellbook tab listing what your class trainer can teach you - available now, coming
+  soon, not yet - with training costs, and which weapon masters teach the weapons you can use. WoW Forever's trainer
+  spells and costs are included (ForeverTrainingData.lua). /ptrain opens it.

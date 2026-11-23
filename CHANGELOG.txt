@@ -1,4 +1,4 @@
-Pint's Training - Changelog
+Pint's Class Training - Changelog
 
 v1.2
 - First release on CurseForge. A spellbook tab listing what your class trainer can teach you - available now, coming

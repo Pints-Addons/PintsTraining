@@ -1,4 +1,4 @@
-Pint's Training - what your class trainer can teach you, at a glance
+Pint's Class Training - what your class trainer can teach you, at a glance
 (WoW Classic Era / WoW Forever)
 
 REQUIRES

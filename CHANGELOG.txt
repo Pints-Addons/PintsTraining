@@ -1,6 +1,14 @@
 Pint's Class Training - Changelog
 
+v1.2.1
+- Hunters can't use thrown weapons (warriors and rogues only): thrown weapons are no longer suggested or counted as
+  usable for hunters.
+- Weapon masters' tooltips (mousing over them, and their pins on Pint's Quest Book's map) say which weapon skills
+  they'd teach you, which you already know, and which aren't for your class.
+
 v1.2
 - First release on CurseForge. A spellbook tab listing what your class trainer can teach you - available now, coming
   soon, not yet - with training costs, and which weapon masters teach the weapons you can use. WoW Forever's trainer
   spells and costs are included (ForeverTrainingData.lua). /ptrain opens it.
+
+

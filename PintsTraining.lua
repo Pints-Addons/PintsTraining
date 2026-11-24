@@ -109,7 +109,7 @@ local WEAPONS = {   -- skill spell -> name
 local CAN_USE = {
 	WARRIOR = { 196, 197, 198, 199, 200, 201, 202, 227, 264, 266, 1180, 2567, 5011, 15590 },
 	PALADIN = { 196, 197, 198, 199, 200, 201, 202 },
-	HUNTER = { 196, 197, 200, 201, 202, 227, 264, 266, 1180, 2567, 5011, 15590 },
+	HUNTER = { 196, 197, 200, 201, 202, 227, 264, 266, 1180, 5011, 15590 },   -- (no Thrown: warriors and rogues only)
 	ROGUE = { 198, 201, 264, 266, 1180, 2567, 5011, 15590 },
 	PRIEST = { 198, 227, 1180 },
 	SHAMAN = { 196, 197, 198, 199, 227, 1180, 15590 },
@@ -128,6 +128,46 @@ local MASTERS = {
 	{ "Ansekhwa", "Thunder Bluff", 2, { 198, 199, 227, 266 } },
 	{ "Archibald", "Undercity", 2, { 201, 202, 1180, 200, 5011 } },
 }
+-- what a weapon master teaches, for this character: lines to add to a tooltip (nil when it isn't a weapon master)
+function PT.MasterLines(name)
+	if type(name) ~= "string" or (issecretvalue and issecretvalue(name)) then return end
+	local m
+	for _, x in ipairs(MASTERS) do if x[1] == name then m = x end end
+	if not m then return end
+	local _, class = UnitClass("player")
+	local can = {}
+	for _, id in ipairs(CAN_USE[class] or {}) do can[id] = true end
+	local learn, known, other = {}, {}, {}
+	for _, id in ipairs(m[4]) do
+		local n = WEAPONS[id] .. ((id == 200) and " (1g)" or " (10s)")
+		if not can[id] then other[#other + 1] = WEAPONS[id]
+		elseif Known(id) then known[#known + 1] = WEAPONS[id]
+		else learn[#learn + 1] = n end
+	end
+	local out = {}
+	if #learn > 0 then out[#out + 1] = { "You can learn: " .. table.concat(learn, ", "), 0.3, 1, 0.3 }
+	else out[#out + 1] = { "Nothing new for you here", 0.7, 0.7, 0.7 } end
+	if #known > 0 then out[#out + 1] = { "Already known: " .. table.concat(known, ", "), 0.6, 0.6, 0.6 } end
+	if #other > 0 then out[#out + 1] = { "Not for your class: " .. table.concat(other, ", "), 0.5, 0.5, 0.5 } end
+	return out
+end
+-- the weapon master's own tooltip, when you mouse over them in the world
+if TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall and Enum and Enum.TooltipDataType and Enum.TooltipDataType.Unit then
+	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tt, data)
+		if tt ~= GameTooltip then return end
+		local ok, _, unit = pcall(tt.GetUnit, tt)
+		if not ok or not unit then return end
+		local okN, n = pcall(UnitName, unit)
+		local lines = okN and PT.MasterLines(n)
+		if lines then for _, l in ipairs(lines) do tt:AddLine(l[1], l[2], l[3], l[4], true) end end
+	end)
+elseif GameTooltip then
+	GameTooltip:HookScript("OnTooltipSetUnit", function(tt)
+		local _, unit = tt:GetUnit()
+		local lines = unit and PT.MasterLines(UnitName(unit))
+		if lines then for _, l in ipairs(lines) do tt:AddLine(l[1], l[2], l[3], l[4], true) end; tt:Show() end
+	end)
+end
 function PT.CollectWeapons()
 	local _, class = UnitClass("player")
 	local myFaction = UnitFactionGroup("player") == "Horde" and 2 or 1

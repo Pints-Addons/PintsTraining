@@ -2,7 +2,7 @@
 ## Title: Pint's Class Training
 ## Notes: A tab on the spellbook listing what your class trainer can teach you - available now, coming soon, not yet - with costs, and which weapon masters teach the weapons you can use. /ptrain
 ## Author: Jake (Pint's Add-ons, built with Claude)
-## Version: 1.2.1
+## Version: 1.2.2
 ## X-Curse-Project-ID: 1821948
 ## SavedVariables: PintsTrainingDB
 ## SavedVariablesPerCharacter: PintsTrainingCharDB
